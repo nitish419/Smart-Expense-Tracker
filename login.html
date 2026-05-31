@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Expense Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border-t-4 border-blue-500">
+        <h2 class="text-3xl font-bold mb-2 text-center text-gray-800">Welcome Back</h2>
+        <p class="text-center text-gray-500 mb-8">Smart Expense Tracker</p>
+        
+        <form id="login-form" onsubmit="event.preventDefault();">
+            <input id="email" type="email" placeholder="Email Address" required class="w-full mb-4 p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-400">
+            <input id="password" type="password" placeholder="Password" required class="w-full mb-6 p-3 border rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-400">
+            
+            <button id="login-btn" type="button" class="w-full bg-blue-600 text-white font-bold p-3 rounded-lg hover:bg-blue-700 transition shadow-md">Login</button>
+            <p id="auth-error" class="text-red-500 text-sm mt-4 text-center hidden"></p>
+        </form>
+
+        <p class="text-center mt-6 text-sm text-gray-600">
+            Don't have an account? <a href="register.html" class="text-green-500 hover:underline">Register here</a>
+        </p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCokcEV6AiJ0CmyaYR6JfEgOsKkE9u0Tkc",
+            authDomain: "smart-expense-tracker-4259b.firebaseapp.com",
+            projectId: "smart-expense-tracker-4259b",
+            storageBucket: "smart-expense-tracker-4259b.firebasestorage.app",
+            messagingSenderId: "557470525394",
+            appId: "1:557470525394:web:41794b398ee34e92108a0b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const errorMsg = document.getElementById('auth-error');
+
+        document.getElementById('login-btn').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    // Redirect to dashboard on success
+                    window.location.href = 'dashboard.html';
+                })
+                .catch(err => {
+                    errorMsg.innerText = err.message;
+                    errorMsg.classList.remove('hidden');
+                });
+        });
+    </script>
+</body>
+</html>
